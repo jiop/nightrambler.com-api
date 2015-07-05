@@ -1,50 +1,37 @@
-var express = require('express');
+var env  = require('node-env-file');
 var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+env(path.join(__dirname, '.env'));
 
-var posts = require('./routes/posts');
+var fs       = require('fs');
+var express  = require('express');
+var mongoose = require('mongoose');
+var config   = require('config');
 
 var app = express();
+var port = process.env.PORT || 3000;
 
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+// Connect to mongodb
+var connect = function () {
+  var options = { server: { socketOptions: { keepAlive: 1 } } };
+  mongoose.connect(config.db, options);
+};
+connect();
+mongoose.connection.on('error', console.log);
+mongoose.connection.on('disconnected', connect);
 
-app.use('/posts', posts);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+// Bootstrap models
+fs.readdirSync(__dirname + '/app/models').forEach(function (file) {
+  if (~file.indexOf('.js')) require(__dirname + '/app/models/' + file);
 });
 
-// error handlers
+// Bootstrap application settings
+require('./config/express')(app);
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.json({
-      message: err.message,
-      error: err
-    });
-  });
-}
+// Bootstrap routes
+require('./config/routes')(app);
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.json({
-        message: err.message,
-        error: {}
-    });
-});
+app.listen(port);
+console.log('Express app started on port ' + port);
 
-
+// Expose
 module.exports = app;
