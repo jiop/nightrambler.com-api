@@ -5,6 +5,7 @@ var compression = require('compression');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var winston = require('winston');
+var cors = require('cors');
 
 var config = require('config/config');
 var pkg = require('../package.json');
@@ -36,6 +37,8 @@ module.exports = function (app, passport) {
     res.locals.env = env;
     next();
   });
+
+  app.use(cors());
 
   // bodyParser should be above methodOverride
   app.use(bodyParser.json());
