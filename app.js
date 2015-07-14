@@ -12,8 +12,6 @@ var config   = require('config/config');
 var app = express();
 var port = process.env.PORT || 3000;
 
-process.env.NODE_PATH = "./config:./app/controllers";
-
 // Connect to mongodb
 var connect = function () {
   var options = { server: { socketOptions: { keepAlive: 1 } } };
