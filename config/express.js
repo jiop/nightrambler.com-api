@@ -6,7 +6,7 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var winston = require('winston');
 
-var config = require('config');
+var config = require('config/config');
 var pkg = require('../package.json');
 
 var env = process.env.NODE_ENV || 'development';

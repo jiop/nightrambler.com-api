@@ -2,6 +2,11 @@
   "name": "nightrambler.com-api",
   "version": "0.0.0",
   "dependencies": {
+    "app-module-path": {
+      "version": "1.0.2",
+      "from": "app-module-path@*",
+      "resolved": "https://registry.npmjs.org/app-module-path/-/app-module-path-1.0.2.tgz"
+    },
     "body-parser": {
       "version": "1.10.2",
       "from": "body-parser@>=1.10.2 <1.11.0",

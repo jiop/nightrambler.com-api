@@ -1,4 +1,4 @@
-var posts = require('posts');
+var posts = require('app/controllers/posts');
 
 module.exports = function (app) {
   app.get('/posts', posts.index);
