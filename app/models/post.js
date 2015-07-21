@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Coord = require('./coord');
-var Image = require('./image');
+var Img = require('./image');
 
 var PostSchema = new Schema({
-  date: { type: Date },
+  date: {type: Date},
   coords: Coord,
-  images: [Image],
-  title: { type: String, default: '' },
-  body: { type: String, default: '' },
+  images: [Img],
+  title: {type: String, default: ''},
+  body: {type: String, default: ''},
 });
 
 PostSchema.path('title').required(true, 'Post title cannot be blank');
